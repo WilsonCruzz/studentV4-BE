@@ -10,10 +10,18 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import os
+import sys
 from pathlib import Path
+# from pymongo.mongo_client import MongoClient
+# from pymongo.server_api import ServerApi
+from dotenv import load_dotenv
+import pymysql
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 
 
 # Quick-start development settings - unsuitable for production
@@ -37,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'apps.student'
 ]
 
 MIDDLEWARE = [
@@ -73,13 +82,31 @@ WSGI_APPLICATION = 'studentV4.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+load_dotenv()
+# mongoDB_uri = os.getenv('mongoDB_uri')
+# # Create a new client and connect to the server
+# client = MongoClient(mongoDB_uri, server_api=ServerApi('1'))
+# # Send a ping to confirm a successful connection
+# try:
+#     client.admin.command('ping')
+#     print("Pinged your deployment. You successfully connected to MongoDB!")
+# except Exception as e:
+#     print(e)
+
+password= os.getenv('database_password')
+host = os.getenv('endpoint')
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'sys',
+        'USER': 'admin',
+        'PASSWORD': password,
+        'HOST': host,
+        'PORT': 3308
     }
 }
+
 
 
 # Password validation
