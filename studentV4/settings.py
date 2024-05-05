@@ -33,7 +33,7 @@ SECRET_KEY = 'django-insecure-+^iywiwmv2bx90c*q^l$#us^3ufpls^q6b(pf2bhoucrs3mq(b
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.0.19', 'localhost:5500']
 
 
 # Application definition
@@ -45,14 +45,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apps.student'
+    'apps.student',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -82,7 +85,7 @@ WSGI_APPLICATION = 'studentV4.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-load_dotenv()
+
 # mongoDB_uri = os.getenv('mongoDB_uri')
 # # Create a new client and connect to the server
 # client = MongoClient(mongoDB_uri, server_api=ServerApi('1'))
@@ -93,18 +96,10 @@ load_dotenv()
 # except Exception as e:
 #     print(e)
 
-password= os.getenv('database_password')
-host = os.getenv('endpoint')
+
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sys',
-        'USER': 'admin',
-        'PASSWORD': password,
-        'HOST': host,
-        'PORT': 3308
-    }
+
 }
 
 
@@ -144,6 +139,35 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+# 添加Cors配置
+# 1.設置白名單
+CORS_ORIGIN_WHITELIST = ('http://192.168.0.19:8000', 'http://192.168.0.19:5500', )
+# 2.Cors cookie
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ALLOW_METHODS = [
+    'GET',
+    'POST',
+    'PUT',
+    'PATCH',
+    'DELETE',
+    'OPTIONS'
+]
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-requested-with',
+    'X-CSRFToken',
+]
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

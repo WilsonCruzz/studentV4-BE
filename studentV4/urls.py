@@ -16,7 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from student import views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # 獲取所有學生訊息的接口
+    path('students/', views.get_students),
+    # 查詢學生訊息的接口
+    path('students/query/', views.query_students),
+    path('csrf-token/', views.get_csrf),
+    # path('verify-csrf/', views.verify_csrf),
 ]
